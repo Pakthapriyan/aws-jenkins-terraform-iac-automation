@@ -1,4 +1,4 @@
-# Jenkins CI/CD with Terraform on AWS
+# End-to-End AWS Infrastructure Automation Using Jenkins and Terraform
 
 This project demonstrates the automation of AWS infrastructure provisioning using Terraform, integrated with Jenkins for continuous integration and delivery (CI/CD). It highlights how Infrastructure as Code (IaC) and CI/CD pipelines can be combined to deliver scalable, repeatable, and automated cloud deployments.
 
