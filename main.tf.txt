@@ -1,0 +1,71 @@
+# Fetch the default VPC and subnet details dynamically
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+# Security Group for Jenkins and SSH access
+resource "aws_security_group" "jenkins_sg" {
+  name        = "jenkins-sg"
+  description = "Allow SSH, HTTP, and Jenkins access"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    description = "Allow SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow Jenkins (port 8080)"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Jenkins-SG"
+  }
+}
+
+# EC2 Instance for Jenkins Server
+resource "aws_instance" "jenkins_server" {
+  ami           = "ami-0330d798dcf2f1753" # Amazon Linux 2023 AMI (x86_64)
+  instance_type = var.instance_type
+  key_name      = var.key_name
+  subnet_id     = data.aws_subnets.default.ids[0]
+  vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
+
+  root_block_device {
+    volume_size = var.volume_size
+  }
+
+  tags = {
+    Name = var.instance_name
+  }
+}
