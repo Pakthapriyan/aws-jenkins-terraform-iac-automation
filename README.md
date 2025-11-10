@@ -48,18 +48,9 @@ Scripting                 HCL, Groovy
 Project Structure
 ------------------------------------------------------------
 
-jenkins-terraform-aws-cicd/
-│
-├── main.tf
-├── provider.tf
-├── variables.tf
-├── outputs.tf
-├── Jenkinsfile
-├── README.md
-└── screenshots/
-    ├── jenkins-dashboard.png
-    ├── pipeline-success.png
-    ├── aws-ec2-instance.png
+
+<img width="479" height="404" alt="image" src="https://github.com/user-attachments/assets/6590ad48-51c6-498e-99e8-81a988981a27" />
+
 
 ------------------------------------------------------------
 Setup Instructions
